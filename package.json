@@ -1,0 +1,15 @@
+{
+  "name": "openq-oz-claim-autotask",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "defender-autotask-client": "^1.12.1"
+  }
+}
