@@ -28,32 +28,28 @@ exports.main = async function (event, contract) {
 	}
 
 	// Otherwise, check withdrawl eligibility for the caller
-	await checkWithdrawalEligibility(issueUrl, oauthToken)
-		.then(async result => {
-			const { issueId, viewer } = await getIssueIdFromUrl(issueUrl, oauthToken);
-			const issueIsOpen = await contract.bountyIsOpen(issueId);
+	try {
+		const result = await checkWithdrawalEligibility(issueUrl, oauthToken)
+		const { issueId, viewer } = await getIssueIdFromUrl(issueUrl, oauthToken);
+		const issueIsOpen = await contract.bountyIsOpen(issueId);
 
-			if (issueIsOpen) {
-				// We only ever arrive in this codeblock if the caller is the closer
-				// Otherwise, an error would have been thrown
-				const options = { gasLimit: 3000000 };
-				const txn = await contract.claimBounty(issueId, payoutAddress, options);
-				console.log(`Called claimBounty in ${txn.hash}`);
-				return { txn: txn.hash, issueId };
-			} else {
-				// If the issue is closed, then return the closer
-				const closer = await getIssueCloser(issueId, oauthToken);
-				const error = { level: 'error', canWithdraw: false, id: payoutAddress, type: 'ISSUE_IS_CLAIMED', message: `The issue you are attempting to claim as ${viewer} at url ${issueUrl} has already been closed by ${closer} and sent to the address ${payoutAddress}.` };
-				console.error(error);
-				return error;
-			}
-		})
-		.catch(e => {
-			console.log("error", e);
-			const error = { level: 'error', id: payoutAddress, type: e.type, message: e.message, canWithdraw: false };
+		if (issueIsOpen) {
+			// We only ever arrive in this codeblock if the caller is the closer
+			// Otherwise, an error would have been thrown
+			const options = { gasLimit: 3000000 };
+			const txn = await contract.claimBounty(issueId, payoutAddress, options);
+			console.log(`Called claimBounty in ${txn.hash}`);
+			return { txn: txn.hash, issueId };
+		} else {
+			// If the issue is closed, then return the closer
+			const closer = await getIssueCloser(issueId, oauthToken);
+			const error = { level: 'error', canWithdraw: false, id: payoutAddress, type: 'ISSUE_IS_CLAIMED', message: `The issue you are attempting to claim as ${viewer} at url ${issueUrl} has already been closed by ${closer} and sent to the address ${payoutAddress}.` };
 			console.error(error);
-			return error;
-		});
+			throw error;
+		}
+	} catch (error) {
+			return { level: 'error', id: payoutAddress, type: error.type, message: error.message, canWithdraw: false };
+	}
 }
 
 // Entrypoint for the Autotask
@@ -113,7 +109,6 @@ if (require.main === module) {
 			const result = await exports.main(event, contractWithWallet)
 			res.status(200).json(result)
 		} catch (error) {
-			console.log("in herror");
 			next(error)
 		}
 	})
