@@ -1,9 +1,6 @@
 // Import dependencies available in the autotask environment
 const { DefenderRelayProvider, DefenderRelaySigner } = require('defender-relay-client/lib/ethers');
-const { ethers } = require('ethers');
 const signedCookie = require('./cookie-decoder');
-const express = require('express');
-const createError = require('http-errors');
 
 const OPENQ_ABI = [{"inputs":[{"internalType":"string","name":"_id","type":"string"},{"internalType":"address","name":"_payoutAddress","type":"address"}],"name":"claimBounty","outputs":[],"stateMutability":"nonpayable","type":"function"}, {"inputs":[{"internalType":"string","name":"_id","type":"string"}],"name":"bountyIsOpen","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"view","type":"function"}]
 
@@ -71,6 +68,8 @@ exports.handler = async (event) => {
 
 // To run locally (this code will not be executed in Autotasks)
 if (require.main === module) {
+	const express = require('express');
+	const { ethers } = require('ethers');
   require('dotenv').config();
   const { API_KEY: apiKey, API_SECRET: apiSecret } = process.env;
 	const app = express();
