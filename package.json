@@ -17,6 +17,7 @@
 	},
 	"devDependencies": {
 		"axios-mock-adapter": "^1.20.0",
-		"jest": "^27.4.7"
+		"jest": "^27.4.7",
+		"lodash": "^4.17.21"
 	}
 }

@@ -1,22 +1,32 @@
 const getIssueIdFromUrl = require('./lib/issueUrlToId');
-const signedCookie = require('./cookie-decoder');
+const cookie = require('cookie-signature');
+const { NO_GITHUB_OAUTH_TOKEN, INVALID_GITHUB_OAUTH_TOKEN } = require('./errors');
 
 const main = async (event, contract) => {
-	let promise = new Promise(async (resolve, reject) => {
+	return new Promise(async (resolve, reject) => {
 		// Extract issueId and payoutAddress from Body
 		// Extract signed GitHub OAuth Token from X-Authorization Header
 		const { issueUrl, payoutAddress } = event.request.body;
 
 		console.log({ level: 'trace', id: payoutAddress, message: `${payoutAddress} attempting to withdraw issue at ${issueUrl}` });
 
-		const signedOAuthToken = event.request.headers['X-Authorization'];
+		// Verify GitHub OAuth Token cookie signature 
+		let signedOAuthToken;
+		if (event.request.headers) {
+			signedOAuthToken = event.request.headers['X-Authorization'];
+			if (!signedOAuthToken) {
+				return reject(NO_GITHUB_OAUTH_TOKEN({ payoutAddress }));
+			}
+		} else {
+			return reject(NO_GITHUB_OAUTH_TOKEN({ payoutAddress }));
+		}
 
-		// Validate and decode the signed GitHub OAuth Token
-		const oauthToken = signedCookie(signedOAuthToken, event.secrets.COOKIE_SIGNING_ENTROPY);
+		const oauthToken = cookie.unsign(signedOAuthToken, event.secrets.COOKIE_SIGNING_ENTROPY);
+		console.log(oauthToken);
 
 		// Return a 401 if no OAuth Token is present or if it is invalid
-		if (typeof oauthToken == 'undefined' || oauthToken == false) {
-			reject({ level: 'error', id: payoutAddress, canWithdraw: false, type: 'NO_GITHUB_OAUTH_TOKEN', message: 'No GitHub OAuth token. You must sign in.' });
+		if (!oauthToken) {
+			return reject(INVALID_GITHUB_OAUTH_TOKEN({ payoutAddress }));
 		}
 
 		// Otherwise, check withdrawl eligibility for the caller
@@ -41,7 +51,6 @@ const main = async (event, contract) => {
 			reject({ level: 'error', id: payoutAddress, type: error.type, message: error.message, canWithdraw: false });
 		}
 	});
-	return promise;
 };
 
 module.exports = main;
