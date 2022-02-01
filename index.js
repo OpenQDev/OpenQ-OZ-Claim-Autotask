@@ -1,14 +1,13 @@
 // Import dependencies available in the autotask environment
-const { DefenderRelayProvider, DefenderRelaySigner } = require('defender-relay-client/lib/ethers');
-const ethers = require('ethers');
 
 // Helper methods
 const main = require('./main');
-const checkWithdrawalEligibility = require('./lib/check-withdrawal-eligibility');
+const checkWithdrawalEligibility = require('./lib/checkWithdrawalEligibility');
 const OPENQ_ABI = require('./OpenQABI.json');
 
 // Autotask Entrypoint - constructs signer and contract using Relay
 exports.handler = async (event) => {
+	const { DefenderRelayProvider, DefenderRelaySigner } = require('defender-relay-client/lib/ethers');
 	// Initialize Defender Relay Signer
 	const provider = new DefenderRelayProvider(event);
 	const signer = new DefenderRelaySigner(event, provider, { speed: 'fastest' });
@@ -24,6 +23,7 @@ exports.handler = async (event) => {
 // Local Provider + Contract Setup
 if (require.main === module) {
 	const express = require('express');
+	const ethers = require('ethers');
 	require('dotenv').config();
 
 	const { API_KEY: apiKey, API_SECRET: apiSecret } = process.env;
