@@ -26,8 +26,8 @@ const ISSUE_NOT_CLOSED_BY_USER = ({ issueId, issueUrl, viewer, closer, prUrl }) 
 	return { issueId, canWithdraw: false, type: 'ISSUE_NOT_CLOSED_BY_USER', message: `Issue with url ${issueUrl} was not closed by ${viewer}. It was closed by ${closer} in PR ${prUrl}.` };
 };
 
-const BOUNTY_IS_CLAIMED = ({ payoutAddress, viewer, issueUrl, closer }) => {
-	return { level: 'error', canWithdraw: false, id: payoutAddress, type: 'BOUNTY_IS_CLAIMED', message: `The issue you are attempting to claim as ${viewer} at url ${issueUrl} has already been closed by ${closer} and sent to the address ${payoutAddress}.` };
+const BOUNTY_IS_CLAIMED = ({ issueUrl, payoutAddress }) => {
+	return { level: 'error', canWithdraw: false, id: payoutAddress, type: 'BOUNTY_IS_CLAIMED', message: `Bounty is already claimed` };
 };
 
 const UNKNOWN_ERROR = ({ issueId, error }) => {

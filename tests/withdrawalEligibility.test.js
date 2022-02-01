@@ -1,4 +1,4 @@
-const { checkWithdrawalEligibility } = require('../lib/checkWithdrawalEligibility');
+const checkWithdrawalEligibility = require('../lib/checkWithdrawalEligibility');
 const {
 	NO_GITHUB_OAUTH_TOKEN,
 	INVALID_GITHUB_OAUTH_TOKEN,
@@ -13,7 +13,6 @@ const {
 
 const axios = require('axios');
 const MockAdapter = require("axios-mock-adapter");
-const _ = require('lodash');
 
 describe('checkWithdrawalEligibility', () => {
 	let issueUrl = 'https://github.com/OpenQDev/OpenQ-TestRepo/issues/53';
@@ -28,10 +27,6 @@ describe('checkWithdrawalEligibility', () => {
 	});
 
 	describe('Retrieving issueId', () => {
-		beforeEach(() => {
-			mock.reset();
-		});
-
 		it('should reject with ISSUE_DOES_NOT_EXIST error if issue is not found', async () => {
 			const data = { errors: [{ type: "NOT_FOUND" }] };
 			mock.onPost('https://api.github.com/graphql').reply(200, data);
@@ -111,7 +106,7 @@ describe('checkWithdrawalEligibility', () => {
 				.onPost('https://api.github.com/graphql')
 				.replyOnce(200, closerData);
 
-			await expect(checkWithdrawalEligibility(issueUrl, oauthToken)).resolves.toEqual(true);
+			await expect(checkWithdrawalEligibility(issueUrl, oauthToken)).resolves.toEqual({ "canWithdraw": true, "issueId": "mockIssueId" });
 		});
 	});
 });

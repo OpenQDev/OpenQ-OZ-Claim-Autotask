@@ -4,7 +4,7 @@ const ethers = require('ethers');
 
 // Helper methods
 const main = require('./main');
-const { checkWithdrawalEligibility, getIssueCloser } = require('./lib/check-withdrawal-eligibility');
+const checkWithdrawalEligibility = require('./lib/check-withdrawal-eligibility');
 const OPENQ_ABI = require('./OpenQABI.json');
 
 // Autotask Entrypoint - constructs signer and contract using Relay
