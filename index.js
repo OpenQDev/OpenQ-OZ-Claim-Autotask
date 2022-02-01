@@ -53,7 +53,7 @@ if (require.main === module) {
 				}
 			},
 			secrets: {
-				COOKIE_SIGNING_ENTROPY: process.env.COOKIE_SIGNING_ENTROPY,
+				COOKIE_SIGNER: process.env.COOKIE_SIGNER,
 				OPENQ_ADDRESS: process.env.OPENQ_ADDRESS
 			},
 			apiKey,
@@ -64,12 +64,9 @@ if (require.main === module) {
 			const result = await main(event, contractWithWallet);
 			res.status(200).json(result);
 		} catch (error) {
-			next(error);
+			console.log(error);
+			res.status(500).json(error);
 		}
-	});
-
-	app.use((error, req, res, next) => {
-		res.status(401).json(error);
 	});
 
 	const PORT = 8070;

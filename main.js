@@ -16,7 +16,7 @@ const main = async (event, contract, checkWithdrawalEligibility = checkWithdrawa
 			return reject(NO_GITHUB_OAUTH_TOKEN({ payoutAddress }));
 		}
 
-		const oauthToken = cookie.unsign(signedOAuthToken, event.secrets.COOKIE_SIGNING_ENTROPY);
+		const oauthToken = cookie.unsign(signedOAuthToken.slice(2), event.secrets.COOKIE_SIGNER);
 
 		if (!oauthToken) {
 			return reject(INVALID_GITHUB_OAUTH_TOKEN({ payoutAddress }));
@@ -34,7 +34,7 @@ const main = async (event, contract, checkWithdrawalEligibility = checkWithdrawa
 				reject(BOUNTY_IS_CLAIMED({ issueUrl, payoutAddress }));
 			}
 		} catch (error) {
-			reject({ level: 'error', id: payoutAddress, type: error.type, message: error.message, canWithdraw: false });
+			reject(error);
 		}
 	});
 };

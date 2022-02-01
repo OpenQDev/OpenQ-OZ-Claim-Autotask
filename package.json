@@ -12,16 +12,6 @@
 	"license": "ISC",
 	"dependencies": {
 		"axios": "^0.25.0",
-		"cookie": "^0.4.1",
 		"cookie-signature": "^1.1.0"
-	},
-	"devDependencies": {
-		"dotenv": "^14.3.2",
-		"ethers": "5.4.1",
-		"express": "^4.17.2",
-		"nodemon": "^2.0.15",
-		"defender-relay-client": "1.11.1",
-		"jest": "^27.4.7",
-		"lodash": "^4.17.21"
 	}
 }
