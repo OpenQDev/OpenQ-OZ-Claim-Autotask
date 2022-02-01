@@ -22,7 +22,7 @@ const ISSUE_NOT_CLOSED_BY_PR = ({ issueId, issueUrl }) => {
 	return { issueId, canWithdraw: false, type: 'ISSUE_NOT_CLOSED_BY_PR', message: 'Issue was not closed by a PR' };
 };
 
-const ISSUE_NOT_CLOSED_BY_USER = ({ issueUrl, viewer, closer, prUrl }) => {
+const ISSUE_NOT_CLOSED_BY_USER = ({ issueId, issueUrl, viewer, closer, prUrl }) => {
 	return { issueId, canWithdraw: false, type: 'ISSUE_NOT_CLOSED_BY_USER', message: `Issue with url ${issueUrl} was not closed by ${viewer}. It was closed by ${closer} in PR ${prUrl}.` };
 };
 
