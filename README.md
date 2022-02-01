@@ -18,6 +18,7 @@ Due to body size limits on OZ tasks, the following dev deps are only needed for 
     "ethers": "5.4.1",
     "express": "^4.17.2",
     "nodemon": "^2.0.15",
-		"defender-relay-client": "1.11.1"
+		"defender-relay-client": "1.11.1",
+		"jest": "^27.4.7"
 	}
 ```
