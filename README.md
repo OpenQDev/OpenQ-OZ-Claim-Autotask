@@ -13,6 +13,7 @@ Due to body size limits on OZ tasks, the following dev deps are only needed for 
 
 ```json
 	"devDependencies": {
+		"axios-mock-adapter": "^1.20.0",
 		"dotenv": "^14.3.2",
 		"ethers": "5.4.1",
 		"express": "^4.17.2",

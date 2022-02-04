@@ -1,13 +1,15 @@
-// Import dependencies available in the autotask environment
-
 // Helper methods
 const main = require('./main');
+const ethers = require('ethers');
+
 const checkWithdrawalEligibility = require('./lib/checkWithdrawalEligibility');
 const OPENQ_ABI = require('./OpenQABI.json');
 
 // Autotask Entrypoint - constructs signer and contract using Relay
 exports.handler = async (event) => {
 	const { DefenderRelayProvider, DefenderRelaySigner } = require('defender-relay-client/lib/ethers');
+	const { ethers } = require('ethers');
+
 	// Initialize Defender Relay Signer
 	const provider = new DefenderRelayProvider(event);
 	const signer = new DefenderRelaySigner(event, provider, { speed: 'fastest' });
@@ -17,13 +19,17 @@ exports.handler = async (event) => {
 	const openQ = new ethers.Contract(OPENQ_ADDRESS, OPENQ_ABI, signer);
 
 	// We then run the main logic in the main function
-	return await main(event, openQ);
+	try {
+		const result = await main(event, openQ);
+		return result;
+	} catch (error) {
+		return error;
+	}
 };
 
 // Local Provider + Contract Setup
 if (require.main === module) {
 	const express = require('express');
-	const ethers = require('ethers');
 	require('dotenv').config();
 
 	const { API_KEY: apiKey, API_SECRET: apiSecret } = process.env;
@@ -62,9 +68,23 @@ if (require.main === module) {
 
 		try {
 			const result = await main(event, contractWithWallet);
-			res.status(200).json(result);
+
+			// On local we mimic the return JSON from OpenZeppelin Autotask
+			// The result in production is stringidied, so we do that here
+			// https://docs.openzeppelin.com/defender/autotasks#webhook-handler
+			const autotaskResult = {
+				"autotaskRunId": "37a91eba-9a6a-4404-95e4-38d178ba69ed",
+				"autotaskId": "19ef0257-bba4-4723-a18f-67d96726213e",
+				"trigger": "webhook",
+				"status": "success",
+				"createdAt": "2021-02-23T18:49:14.812Z",
+				"encodedLogs": "U1RBU...cwkK",
+				"result": JSON.stringify(result),
+				"requestId": "e7979150-44d3-4021-926c-9d9679788eb8"
+			};
+
+			res.status(200).send(autotaskResult);
 		} catch (error) {
-			console.log(error);
 			res.status(500).json(error);
 		}
 	});

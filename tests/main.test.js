@@ -11,8 +11,8 @@ describe('main', () => {
 	let mock;
 	let payoutAddress = '0x1abc0D6fb0d5A374027ce98Bf15716A3Ee31e580';
 	let issueUrl = 'https://github.com/OpenQDev/OpenQ-TestRepo/issues/53';
-	let validSignedOAuthToken = 'gho_abc23.WX10blG9QXCel8twi6gjLNtILNdWo/Xv5hwxW6bfpXU';
-	let COOKIE_SIGNING_ENTROPY = 'entropydfnjd23';
+	let validSignedOAuthToken = 's:gho_sd34fd.1KAuAkesI8Mt6/1Vc0Gs1EtYI/54zJatUWL8E407YQU';
+	let COOKIE_SIGNER = 'entropydfnjd23';
 	let OPENQ_ADDRESS = '0xCf7Ed3AccA5a467e9e704C703E8D87F634fB0Fc9';
 	let apiKey = 'mockApiKey';
 	let apiSecret = 'mockApiSecret';
@@ -35,7 +35,7 @@ describe('main', () => {
 				}
 			},
 			secrets: {
-				COOKIE_SIGNING_ENTROPY,
+				COOKIE_SIGNER,
 				OPENQ_ADDRESS
 			},
 			apiKey,
