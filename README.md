@@ -1,4 +1,4 @@
-# OpenQ-OZ-Claim-AutoTask
+# OpenQ-OZ-Claim-Autotask
 
 Add your admin API_KEY and API_SECRET to your .env file
 

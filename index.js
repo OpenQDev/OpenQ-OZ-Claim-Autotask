@@ -55,7 +55,7 @@ if (require.main === module) {
 					payoutAddress
 				},
 				headers: {
-					'X-Authorization': signedOAuthToken
+					'x-authorization': signedOAuthToken
 				}
 			},
 			secrets: {

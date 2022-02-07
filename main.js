@@ -8,7 +8,7 @@ const main = async (event, contract, checkWithdrawalEligibility = checkWithdrawa
 
 		let signedOAuthToken;
 		if (event.request.headers) {
-			signedOAuthToken = event.request.headers['X-Authorization'];
+			signedOAuthToken = event.request.headers['x-authorization'];
 			if (!signedOAuthToken) {
 				return reject(NO_GITHUB_OAUTH_TOKEN({ payoutAddress }));
 			}
@@ -17,7 +17,6 @@ const main = async (event, contract, checkWithdrawalEligibility = checkWithdrawa
 		}
 
 		const oauthToken = cookie.unsign(signedOAuthToken.slice(2), event.secrets.COOKIE_SIGNER);
-		console.log(oauthToken);
 
 		if (!oauthToken) {
 			return reject(INVALID_GITHUB_OAUTH_TOKEN({ payoutAddress }));
@@ -30,7 +29,7 @@ const main = async (event, contract, checkWithdrawalEligibility = checkWithdrawa
 			if (issueIsOpen) {
 				const options = { gasLimit: 3000000 };
 				const txn = await contract.claimBounty(issueId, payoutAddress, options);
-				resolve({ txnHash: txn.hash, issueId });
+				resolve({ txnHash: txn.hash, issueId, txn });
 			} else {
 				reject(BOUNTY_IS_CLAIMED({ issueUrl, payoutAddress }));
 			}
