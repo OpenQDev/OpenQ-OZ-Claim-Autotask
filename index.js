@@ -15,7 +15,8 @@ exports.handler = async (event) => {
 	const signer = new DefenderRelaySigner(event, provider, { speed: 'fastest' });
 
 	// Prepare OpenQ Contract for call
-	const OPENQ_ADDRESS = event.secrets.OPENQ_ADDRESS;
+	let OPENQ_ADDRESS = event.secrets.OPENQ_ADDRESS_STAGING;
+
 	const openQ = new ethers.Contract(OPENQ_ADDRESS, OPENQ_ABI, signer);
 
 	// We then run the main logic in the main function

@@ -94,11 +94,28 @@ describe('checkWithdrawalEligibility', () => {
 			await expect(checkWithdrawalEligibility(issueUrl, oauthToken)).rejects.toEqual(message);
 		});
 
+		it('should resolve to true if ANY of the timeline events include a closer of which the user is author', async () => {
+			const mockIssueId = "mockIssueId";
+
+			const issueIdData = { data: { repository: { issue: { id: mockIssueId } }, viewer: { login: "FlacoJones" } } };
+			const closerData = { data: { node: { closed: true, timelineItems: { nodes: [{ closer: null }, { closer: { url: 'https://github.com/OpenQDev/OpenQ-TestRepo/pull/54', author: { login: 'NotFlacoJones' } } }] } }, viewer: { login: "FlacoJones" } } };
+
+			const message = ISSUE_NOT_CLOSED_BY_USER({ issueId: mockIssueId, issueUrl, viewer: "FlacoJones", closer: "NotFlacoJones", prUrl: "https://github.com/OpenQDev/OpenQ-TestRepo/pull/54" });
+
+			mock
+				.onPost('https://api.github.com/graphql')
+				.replyOnce(200, issueIdData)
+				.onPost('https://api.github.com/graphql')
+				.replyOnce(200, closerData);
+
+			await expect(checkWithdrawalEligibility(issueUrl, oauthToken)).rejects.toEqual(message);
+		});
+
 		it('should resolve to true if issue was closed by PR from viewer', async () => {
 			const mockIssueId = "mockIssueId";
 
 			const issueIdData = { data: { repository: { issue: { id: mockIssueId } }, viewer: { login: "FlacoJones" } } };
-			const closerData = { data: { node: { closed: true, timelineItems: { nodes: [{ closer: { url: 'https://github.com/OpenQDev/OpenQ-TestRepo/pull/54', author: { login: 'FlacoJones' } } }] } }, viewer: { login: "FlacoJones" } } };
+			const closerData = { data: { node: { closed: true, timelineItems: { nodes: [{ closer: null }, { closer: { url: 'https://github.com/OpenQDev/OpenQ-TestRepo/pull/54', author: { login: 'FlacoJones' } } }] } }, viewer: { login: "FlacoJones" } } };
 
 			mock
 				.onPost('https://api.github.com/graphql')

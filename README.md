@@ -2,14 +2,21 @@
 
 Add your admin API_KEY and API_SECRET to your .env file
 
-Mumbai
+DEVELOPMENT
 ```bash
 defender-autotask update-code aabc7005-3f05-40cf-af97-8a565bcb892e .
+```
+
+STAGING
+```bash
+defender-autotask update-code 4dd85746-9989-41e9-907e-1d85bf0253aa .
 ```
 
 Running Locally
 
 Due to body size limits on OZ tasks, the following dev deps are only needed for local development, but cannot be included in the `node_modules/` folder at the time of pushing code.
+
+Remove them before push to remote.
 
 ```json
 	"devDependencies": {
