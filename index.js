@@ -7,6 +7,7 @@ const OPENQ_ABI = require('./OpenQABI.json');
 
 // Autotask Entrypoint - constructs signer and contract using Relay
 exports.handler = async (event) => {
+	let OPENQ_ADDRESS = event.secrets.OPENQ_ADDRESS_DEVELOPMENT;
 	const { DefenderRelayProvider, DefenderRelaySigner } = require('defender-relay-client/lib/ethers');
 	const { ethers } = require('ethers');
 
@@ -15,8 +16,6 @@ exports.handler = async (event) => {
 	const signer = new DefenderRelaySigner(event, provider, { speed: 'fastest' });
 
 	// Prepare OpenQ Contract for call
-	let OPENQ_ADDRESS = event.secrets.OPENQ_ADDRESS_DEVELOPMENT;
-
 	const openQ = new ethers.Contract(OPENQ_ADDRESS, OPENQ_ABI, signer);
 
 	// We then run the main logic in the main function

@@ -4,6 +4,7 @@ const checkWithdrawalEligibilityImpl = require('./lib/checkWithdrawalEligibility
 
 const main = async (event, contract, checkWithdrawalEligibility = checkWithdrawalEligibilityImpl) => {
 	return new Promise(async (resolve, reject) => {
+		const cookieSigner = event.secrets.COOKIE_SIGNER_DEVELOPMENT;
 		const { issueUrl, payoutAddress } = event.request.body;
 
 		let signedOAuthToken;
@@ -16,7 +17,7 @@ const main = async (event, contract, checkWithdrawalEligibility = checkWithdrawa
 			return reject(NO_GITHUB_OAUTH_TOKEN({ payoutAddress }));
 		}
 
-		const oauthToken = cookie.unsign(signedOAuthToken.slice(2), event.secrets.COOKIE_SIGNER_DEVELOPMENT);
+		const oauthToken = cookie.unsign(signedOAuthToken.slice(2), cookieSigner);
 
 		if (!oauthToken) {
 			return reject(INVALID_GITHUB_OAUTH_TOKEN({ payoutAddress }));
