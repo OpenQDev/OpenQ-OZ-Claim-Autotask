@@ -68,7 +68,7 @@ describe('main', () => {
 
 		const checkWithdrawalEligibility = require('../lib/checkWithdrawalEligibility');
 
-		const MockOpenQContract = require('./__mocks__/MockOpenQContract');
+		const MockOpenQContract = require('../__mocks__/MockOpenQContract');
 		MockOpenQContract.isOpen = false;
 
 		await expect(main(event, MockOpenQContract, checkWithdrawalEligibility)).rejects.toEqual(message);
@@ -83,7 +83,7 @@ describe('main', () => {
 
 		const checkWithdrawalEligibility = require('../lib/checkWithdrawalEligibility');
 
-		const MockOpenQContract = require('./__mocks__/MockOpenQContract');
+		const MockOpenQContract = require('../__mocks__/MockOpenQContract');
 		MockOpenQContract.isOpen = true;
 
 		await expect(main(event, MockOpenQContract, checkWithdrawalEligibility)).resolves.toEqual({ txnHash: "0x38sdf", issueId: "mockIssueId" });

@@ -9,7 +9,12 @@ defender-autotask update-code aabc7005-3f05-40cf-af97-8a565bcb892e .
 
 STAGING
 ```bash
-defender-autotask update-code 4dd85746-9989-41e9-907e-1d85bf0253aa .
+defender-autotask update-code c09dad72-cf2b-40d7-a2bc-6d3b630eaf8f .
+```
+
+PRODUCTION
+```bash
+<GET FROM ADMIN>
 ```
 
 Running Locally
