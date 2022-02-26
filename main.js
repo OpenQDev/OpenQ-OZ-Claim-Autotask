@@ -16,7 +16,7 @@ const main = async (event, contract, checkWithdrawalEligibility = checkWithdrawa
 			return reject(NO_GITHUB_OAUTH_TOKEN({ payoutAddress }));
 		}
 
-		const oauthToken = cookie.unsign(signedOAuthToken.slice(2), event.secrets.COOKIE_SIGNER_PRODUCTION);
+		const oauthToken = cookie.unsign(signedOAuthToken.slice(2), event.secrets.COOKIE_SIGNER_DEVELOPMENT);
 
 		if (!oauthToken) {
 			return reject(INVALID_GITHUB_OAUTH_TOKEN({ payoutAddress }));
