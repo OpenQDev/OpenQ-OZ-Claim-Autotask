@@ -15,18 +15,27 @@ const axios = require('axios');
 const MockAdapter = require("axios-mock-adapter");
 
 describe('checkWithdrawalEligibility', () => {
-	let issueUrl = 'https://github.com/OpenQDev/OpenQ-TestRepo/issues/53';
+	let issueUrl = 'https://github.com/OpenQDev/OpenQ-TestRepo/issues/93';
 	let oauthToken = 'oAuthToken';
 
 	beforeAll(() => {
-		mock = new MockAdapter(axios);
+		// mock = new MockAdapter(axios);
 	});
 
 	beforeEach(() => {
-		mock.reset();
+		// mock.reset();
 	});
 
 	describe('Retrieving issueId', () => {
+		it.only('should print result', async () => {
+			try {
+				const result = await checkWithdrawalEligibility(issueUrl, "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");
+				console.log(result);
+			} catch (error) {
+				console.log(error);
+			}
+		});
+
 		it('should reject with ISSUE_DOES_NOT_EXIST error if issue is not found', async () => {
 			const data = { errors: [{ type: "NOT_FOUND" }] };
 			mock.onPost('https://api.github.com/graphql').reply(200, data);
