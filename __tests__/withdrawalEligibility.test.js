@@ -29,7 +29,7 @@ describe('checkWithdrawalEligibility', () => {
 	describe('Retrieving issueId', () => {
 		it.only('should print result', async () => {
 			try {
-				const result = await checkWithdrawalEligibility(issueUrl, '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');
+				const result = await checkWithdrawalEligibility(issueUrl, '');
 				console.log(result);
 			} catch (error) {
 				console.log(error);

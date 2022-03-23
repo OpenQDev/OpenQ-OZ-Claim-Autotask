@@ -42,6 +42,10 @@ const UNKNOWN_ERROR = ({ issueId, error }) => {
 	return { issueId, canWithdraw: false, type: 'UNKNOWN_ERROR', errorMessage: JSON.stringify(error) };
 };
 
+const NO_WITHDRAWABLE_PR_FOUND = ({ issueId }) => {
+	return { issueId, canWithdraw: false, type: 'NO_WITHDRAWABLE_PR_FOUND', errorMessage: 'No withdrawable PR found' };
+};
+
 module.exports = {
 	INVALID_GITHUB_OAUTH_TOKEN,
 	NO_GITHUB_OAUTH_TOKEN,
@@ -53,5 +57,6 @@ module.exports = {
 	PR_NOT_AUTHORED_BY_USER,
 	PR_NOT_MERGED_INTO_ORGANIZATION_REPOSITORY,
 	BOUNTY_IS_CLAIMED,
+	NO_WITHDRAWABLE_PR_FOUND,
 	UNKNOWN_ERROR
 };
