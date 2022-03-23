@@ -27,7 +27,7 @@ const main = async (event, contract, checkWithdrawalEligibility = checkWithdrawa
 			const { canWithdraw, issueId } = await checkWithdrawalEligibility(issueUrl, oauthToken);
 			const issueIsOpen = await contract.bountyIsOpen(issueId);
 
-			if (issueIsOpen) {
+			if (canWithdraw && issueIsOpen) {
 				const options = { gasLimit: 3000000 };
 				const txn = await contract.claimBounty(issueId, payoutAddress, options);
 				resolve({ txnHash: txn.hash, issueId });

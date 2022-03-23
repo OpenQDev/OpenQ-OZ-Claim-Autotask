@@ -11,7 +11,7 @@ const MockOpenQContract = {
 			resolve(isOpen);
 		});
 	},
-	claimBounty: async (issueId, payoutAddress, options, hash = "0x38sdf") => {
+	claimBounty: async (issueId, payoutAddress, options, hash = '0x38sdf') => {
 		return new Promise(async (resolve, reject) => {
 			resolve({ hash });
 		});
