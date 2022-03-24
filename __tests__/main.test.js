@@ -56,7 +56,7 @@ describe.only('main', () => {
 		await expect(main(event, {})).rejects.toEqual(INVALID_GITHUB_OAUTH_TOKEN({ payoutAddress }));
 	});
 
-	it.only('should reject with BOUNTY_IS_CLAIMED if issue was closed by user, but bounty is already claimed', async () => {
+	it('should reject with BOUNTY_IS_CLAIMED if issue was closed by user, but bounty is already claimed', async () => {
 		const message = BOUNTY_IS_CLAIMED({ issueUrl, payoutAddress });
 
 		jest.mock('../lib/checkWithdrawalEligibility', () => {
@@ -64,13 +64,19 @@ describe.only('main', () => {
 				return { canWithdraw: true, issueId: 'mockIssueId' };
 			});
 		});
-
 		const checkWithdrawalEligibility = require('../lib/checkWithdrawalEligibility');
+
+		jest.mock('../lib/validateSignedOauthToken', () => {
+			return jest.fn(() => {
+				return { oauthToken: 'mockOAuthToken' };
+			});
+		});
+		const validateSignedOauthToken = require('../lib/checkWithdrawalEligibility');
 
 		const MockOpenQContract = require('../__mocks__/MockOpenQContract');
 		MockOpenQContract.isOpen = false;
 
-		await expect(main(event, MockOpenQContract, checkWithdrawalEligibility)).rejects.toEqual(message);
+		await expect(main(event, MockOpenQContract, checkWithdrawalEligibility, validateSignedOauthToken)).rejects.toEqual(message);
 	});
 
 	it('should call contract.claimBounty if bounty is open', async () => {
@@ -79,12 +85,18 @@ describe.only('main', () => {
 				return { canWithdraw: true, issueId: 'mockIssueId' };
 			});
 		});
-
 		const checkWithdrawalEligibility = require('../lib/checkWithdrawalEligibility');
+
+		jest.mock('../lib/validateSignedOauthToken', () => {
+			return jest.fn(() => {
+				return { oauthToken: 'mockOAuthToken' };
+			});
+		});
+		const validateSignedOauthToken = require('../lib/checkWithdrawalEligibility');
 
 		const MockOpenQContract = require('../__mocks__/MockOpenQContract');
 		MockOpenQContract.isOpen = true;
 
-		await expect(main(event, MockOpenQContract, checkWithdrawalEligibility)).resolves.toEqual({ txnHash: '0x38sdf', issueId: 'mockIssueId' });
+		await expect(main(event, MockOpenQContract, checkWithdrawalEligibility, validateSignedOauthToken)).resolves.toEqual({ txnHash: '0x38sdf', issueId: 'mockIssueId' });
 	});
 });
