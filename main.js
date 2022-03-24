@@ -10,6 +10,7 @@ const main = async (
 ) => {
 	return new Promise(async (resolve, reject) => {
 		const { issueUrl, payoutAddress } = event.request.body;
+		console.log(`Attempting claim on ${issueUrl} to ${payoutAddress}`);
 
 		let oauthToken;
 		try {
@@ -18,8 +19,11 @@ const main = async (
 			return reject(error);
 		}
 
+		console.log(oauthToken);
+
 		try {
 			const { canWithdraw, issueId } = await checkWithdrawalEligibility(issueUrl, oauthToken);
+			console.log(canWithdraw);
 			const issueIsOpen = await contract.bountyIsOpen(issueId);
 
 			if (canWithdraw && issueIsOpen) {
@@ -30,6 +34,7 @@ const main = async (
 				reject(BOUNTY_IS_CLAIMED({ issueUrl, payoutAddress }));
 			}
 		} catch (error) {
+			console.log(error);
 			reject(error);
 		}
 	});
