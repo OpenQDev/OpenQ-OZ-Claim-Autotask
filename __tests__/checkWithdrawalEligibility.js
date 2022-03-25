@@ -8,7 +8,10 @@ const axios = require('axios');
 const MockAdapter = require('axios-mock-adapter');
 
 describe('checkWithdrawalEligibility', () => {
-	let issueUrl = 'https://github.com/OpenQDev/OpenQ-TestRepo/issues/104';
+	let connectedMergedPullRequest = 'https://github.com/OpenQDev/OpenQ-TestRepo/issues/107';
+	let noConnectedPullRequests = 'https://github.com/OpenQDev/OpenQ-TestRepo/issues/110';
+	let connectedUnmergedPullRequest = 'https://github.com/OpenQDev/OpenQ-TestRepo/issues/111';
+	let connectedThenDisconnectedPullRequest = 'https://github.com/OpenQDev/OpenQ-TestRepo/issues/111';
 	let oauthToken = 'oAuthToken';
 	let mock;
 
@@ -22,7 +25,7 @@ describe('checkWithdrawalEligibility', () => {
 
 	describe('Retrieving issueId', () => {
 		it.only('should print', async () => {
-			const result = await checkWithdrawalEligibility(issueUrl, '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');
+			const result = await checkWithdrawalEligibility(linkedUnmergedPullRequest, '');
 			console.log(result);
 		});
 	});
