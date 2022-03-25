@@ -19,8 +19,6 @@ const main = async (
 			return reject(error);
 		}
 
-		console.log(oauthToken);
-
 		try {
 			const { canWithdraw, issueId } = await checkWithdrawalEligibility(issueUrl, oauthToken);
 			console.log(canWithdraw);

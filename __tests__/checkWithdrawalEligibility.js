@@ -8,16 +8,23 @@ const axios = require('axios');
 const MockAdapter = require('axios-mock-adapter');
 
 describe('checkWithdrawalEligibility', () => {
-	let issueUrl = 'https://github.com/OpenQDev/OpenQ-TestRepo/issues/93';
+	let issueUrl = 'https://github.com/OpenQDev/OpenQ-TestRepo/issues/104';
 	let oauthToken = 'oAuthToken';
 	let mock;
 
 	beforeAll(() => {
-		mock = new MockAdapter(axios);
+		// mock = new MockAdapter(axios);
 	});
 
 	beforeEach(() => {
-		mock.reset();
+		// mock.reset();
+	});
+
+	describe('Retrieving issueId', () => {
+		it.only('should print', async () => {
+			const result = await checkWithdrawalEligibility(issueUrl, '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');
+			console.log(result);
+		});
 	});
 
 	describe('Retrieving issueId', () => {
