@@ -4,7 +4,11 @@ const cookie = require('cookie-signature');
 describe('validateSignedOauthToken', () => {
 	const oauthToken = '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';
 	const cookieSigner = 'development';
-	const signedOauthToken = 's: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.91UVEUqugprzdVYo/F9iK5BWC4u/FeHugUTg7vNRA7x9Q';
+	const signedOauthToken = cookie.sign(oauthToken, cookieSigner);
+
+	// Since we use cookie-parser Express.js middleware, we receive a token prefixed with the s: signed token identifier
+	// This must be removed before unsigning the cookie
+	const prefixedSignedOAuthToken = `s:${signedOauthToken}`;
 
 	const payoutAddress = '0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266';
 
@@ -41,7 +45,7 @@ describe('validateSignedOauthToken', () => {
 			},
 			request: {
 				headers: {
-					'x-authorization': 's%3Agho_IDONOTWORK'
+					'x-authorization': 's:gho_IDONOTWORK'
 				}
 			}
 		};
@@ -49,21 +53,14 @@ describe('validateSignedOauthToken', () => {
 		expect(validateSignedOauthToken(payoutAddress, invalidXAuthorizationHeaderEvent)).rejects.toEqual({ 'canWithdraw': false, 'errorMessage': 'Invalid GitHub OAuth toke unsigned by OpenQ', 'id': '0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266', 'type': 'INVALID_GITHUB_OAUTH_TOKEN' });
 	});
 
-	it('sign a cookie', async () => {
-		const oauthToken = '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';
-		const cookieSigner = 'development';
-		const signedOauthToken = cookie.sign(oauthToken, cookieSigner);
-		console.log(`${signedOauthToken}`);
-	});
-
-	it.only('should resolve with unsigned oauthToken all goes well', async () => {
+	it('should resolve with unsigned oauthToken all goes well', async () => {
 		const validXAuthorizationHeaderEvent = {
 			secrets: {
 				COOKIE_SIGNER: cookieSigner
 			},
 			request: {
 				headers: {
-					'x-authorization': signedOauthToken
+					'x-authorization': prefixedSignedOAuthToken
 				}
 			}
 		};
