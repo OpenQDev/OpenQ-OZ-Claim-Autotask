@@ -21,18 +21,20 @@ const main = async (
 
 		try {
 			const { canWithdraw, issueId } = await checkWithdrawalEligibility(issueUrl, oauthToken);
-			console.log(canWithdraw);
 			const issueIsOpen = await contract.bountyIsOpen(issueId);
 
 			if (canWithdraw && issueIsOpen) {
 				const options = { gasLimit: 3000000 };
 				const txn = await contract.claimBounty(issueId, payoutAddress, options);
+
+				console.log(`Can withdraw. Transaction hash is ${txn.hash}`);
 				resolve({ txnHash: txn.hash, issueId });
 			} else {
+				console.error(BOUNTY_IS_CLAIMED({ issueUrl, payoutAddress }));
 				reject(BOUNTY_IS_CLAIMED({ issueUrl, payoutAddress }));
 			}
 		} catch (error) {
-			console.log(error);
+			console.error(error);
 			reject(error);
 		}
 	});

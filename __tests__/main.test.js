@@ -42,23 +42,71 @@ describe('main', () => {
 		};
 	});
 
-	it.only('should respond with 401 if no auth token is provided', async () => {
-		event = _.update(event, 'request.headers', () => undefined);
+	it('should respond with 401 if no header OR no oauth token is provided', async () => {
+		event = {
+			request: {
+				body: {
+					issueUrl,
+					payoutAddress
+				}
+			},
+			secrets: {
+				COOKIE_SIGNER,
+				OPENQ_ADDRESS
+			},
+			apiKey,
+			apiSecret,
+		};
 
 		await expect(main(event, {})).rejects.toEqual(NO_GITHUB_OAUTH_TOKEN({ payoutAddress }));
 
-		event = _.update(event, 'request.headers.X-Authorization', () => undefined);
+		event = {
+			request: {
+				body: {
+					issueUrl,
+					payoutAddress
+				},
+				headers: {
+					'X-Authorization': undefined
+				}
+			},
+			secrets: {
+				COOKIE_SIGNER,
+				OPENQ_ADDRESS
+			},
+			apiKey,
+			apiSecret,
+		};
+
 		await expect(main(event, {})).rejects.toEqual(NO_GITHUB_OAUTH_TOKEN({ payoutAddress }));
 	});
 
 	it('should respond with 401 if X-Authorization token is present but signature verification fails', async () => {
-		event = _.update(event, 'request.headers.X-Authorization', () => 'invalid_oauth');
+		event = {
+			request: {
+				body: {
+					issueUrl,
+					payoutAddress
+				},
+				headers: {
+					'x-authorization': 's:gho_IDONOTWORK'
+				}
+			},
+			secrets: {
+				COOKIE_SIGNER,
+				OPENQ_ADDRESS
+			},
+			apiKey,
+			apiSecret,
+		};
+
 		await expect(main(event, {})).rejects.toEqual(INVALID_GITHUB_OAUTH_TOKEN({ payoutAddress }));
 	});
 
-	it('should reject with BOUNTY_IS_CLAIMED if issue was closed by user, but bounty is already claimed', async () => {
-		const message = BOUNTY_IS_CLAIMED({ issueUrl, payoutAddress });
+	it.only('should reject with BOUNTY_IS_CLAIMED if issue was closed by user, but bounty is already claimed', async () => {
+		// ARRANGE
 
+		// Set up mocks for checkWithdrawalEligibility, validateSignedOauthToken and OpenQ contract
 		jest.mock('../lib/checkWithdrawalEligibility', () => {
 			return jest.fn(() => {
 				return { canWithdraw: true, issueId: 'mockIssueId' };
@@ -76,7 +124,7 @@ describe('main', () => {
 		const MockOpenQContract = require('../__mocks__/MockOpenQContract');
 		MockOpenQContract.isOpen = false;
 
-		await expect(main(event, MockOpenQContract, checkWithdrawalEligibility, validateSignedOauthToken)).rejects.toEqual(message);
+		await expect(main(event, MockOpenQContract, checkWithdrawalEligibility, validateSignedOauthToken)).rejects.toEqual(BOUNTY_IS_CLAIMED({ issueUrl, payoutAddress }));
 	});
 
 	it('should call contract.claimBounty if bounty is open', async () => {
@@ -97,6 +145,7 @@ describe('main', () => {
 		const MockOpenQContract = require('../__mocks__/MockOpenQContract');
 		MockOpenQContract.isOpen = true;
 
-		await expect(main(event, MockOpenQContract, checkWithdrawalEligibility, validateSignedOauthToken)).resolves.toEqual({ txnHash: '0x38sdf', issueId: 'mockIssueId' });
+		// MockOpenQContract defaults to return 0x123abc when claimBounty is called
+		await expect(main(event, MockOpenQContract, checkWithdrawalEligibility, validateSignedOauthToken)).resolves.toEqual({ txnHash: '0x123abc', issueId: 'mockIssueId' });
 	});
 });
