@@ -48,12 +48,17 @@ const NO_WITHDRAWABLE_PR_FOUND = ({ issueId, linkedPRs }) => {
 	};
 };
 
+const NO_CLOSER_COMMENT_AT_MERGE_TIME = ({ issueId }) => {
+	return { issueId, canWithdraw: false, type: 'NO_CLOSER_COMMENT_AT_MERGE_TIME', errorMessage: 'There was no Closer comment on any pull request referencing this issue' };
+};
+
 const NO_CONNECTED_PRS = ({ issueId }) => {
 	return { issueId, canWithdraw: false, type: 'NO_CONNECTED_PRS', errorMessage: 'There are no pull requests linked to this issue.' };
 };
 
 module.exports = {
 	INVALID_GITHUB_OAUTH_TOKEN,
+	NO_CLOSER_COMMENT_AT_MERGE_TIME,
 	NO_GITHUB_OAUTH_TOKEN,
 	GITHUB_OAUTH_TOKEN_LACKS_PRIVILEGES,
 	PR_NOT_MERGED,
