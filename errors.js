@@ -42,9 +42,10 @@ const UNKNOWN_ERROR = ({ issueId, error }) => {
 	return { issueId, canWithdraw: false, type: 'UNKNOWN_ERROR', errorMessage: JSON.stringify(error) };
 };
 
-const NO_WITHDRAWABLE_PR_FOUND = ({ issueId, linkedPRs }) => {
+const NO_WITHDRAWABLE_PR_FOUND = ({ issueId, referencedPrs }) => {
+	const pullRequests = referencedPrs.map(pr => pr.url).join(',');
 	return {
-		issueId, canWithdraw: false, type: 'NO_WITHDRAWABLE_PR_FOUND', errorMessage: `No withdrawable PR found.  In order for a PR to qualify for claim it needs to be connected to the issue by a maintainer and merged by YOU. We found the following linked pull requests that do not meet the above criteria: ${linkedPRs}`
+		issueId, canWithdraw: false, type: 'NO_WITHDRAWABLE_PR_FOUND', errorMessage: `No withdrawable PR found.  In order for a PR to qualify for claim it needs to be connected to the issue by a maintainer and merged by YOU. We found the following linked pull requests that do not meet the above criteria: ${pullRequests}`
 	};
 };
 
@@ -52,8 +53,8 @@ const NO_CLOSER_COMMENT_AT_MERGE_TIME = ({ issueId }) => {
 	return { issueId, canWithdraw: false, type: 'NO_CLOSER_COMMENT_AT_MERGE_TIME', errorMessage: 'There was no Closer comment on any pull request referencing this issue' };
 };
 
-const NO_CONNECTED_PRS = ({ issueId }) => {
-	return { issueId, canWithdraw: false, type: 'NO_CONNECTED_PRS', errorMessage: 'There are no pull requests linked to this issue.' };
+const NO_PULL_REQUESTS_REFERENCE_ISSUE = ({ issueId }) => {
+	return { issueId, canWithdraw: false, type: 'NO_PULL_REQUESTS_REFERENCE_ISSUE', errorMessage: 'There are no pull requests linked to this issue.' };
 };
 
 module.exports = {
@@ -63,7 +64,7 @@ module.exports = {
 	GITHUB_OAUTH_TOKEN_LACKS_PRIVILEGES,
 	PR_NOT_MERGED,
 	ISSUE_DOES_NOT_EXIST,
-	NO_CONNECTED_PRS,
+	NO_PULL_REQUESTS_REFERENCE_ISSUE,
 	ISSUE_NOT_CLOSED,
 	ISSUE_NOT_CLOSED_BY_PR,
 	PR_NOT_AUTHORED_BY_USER,
