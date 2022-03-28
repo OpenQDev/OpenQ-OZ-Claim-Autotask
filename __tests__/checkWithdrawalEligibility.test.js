@@ -20,11 +20,11 @@ describe('checkWithdrawalEligibility', () => {
 	let mock;
 
 	beforeAll(() => {
-		// mock = new MockAdapter(axios);
+		mock = new MockAdapter(axios);
 	});
 
 	beforeEach(() => {
-		// mock.reset();
+		mock.reset();
 	});
 
 	describe('testing', () => {
@@ -32,7 +32,7 @@ describe('checkWithdrawalEligibility', () => {
 			expect(checkWithdrawalEligibility(closerCommentInBodyNoEditsAlo9507Issue, '')).resolves.toEqual({ canWithdraw: true, errorMessage: null, issueId: 'I_kwDOGWnnz85GfZiD', type: 'SUCCESS' });
 		});
 
-		it.only('should NOT return true if Closes was not present at time of merge in body', async () => {
+		it('should NOT return true if Closes was not present at time of merge in body', async () => {
 			expect(checkWithdrawalEligibility(closerCommentInBodyThenRemovedAlo9507Issue, '')).resolves.toEqual({ canWithdraw: false, errorMessage: null, issueId: 'I_kwDOGWnnz85Gfb68', type: 'NO_CLOSER_COMMENT_AT_MERGE_TIME' });
 		});
 	});
