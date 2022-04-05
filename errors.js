@@ -45,7 +45,7 @@ const UNKNOWN_ERROR = ({ issueId, error }) => {
 const NO_WITHDRAWABLE_PR_FOUND = ({ issueId, referencedPrs }) => {
 	const pullRequests = referencedPrs.map(pr => pr.url).join(',');
 	return {
-		issueId, canWithdraw: false, type: 'NO_WITHDRAWABLE_PR_FOUND', errorMessage: `No withdrawable PR found.  In order for a PR to qualify for claim it needs to be connected to the issue by a maintainer and merged by YOU. We found the following linked pull requests that do not meet the above criteria: ${pullRequests}`
+		issueId, canWithdraw: false, type: 'NO_WITHDRAWABLE_PR_FOUND', errorMessage: `No withdrawable PR found.  In order for a pull request to unlock a claim, it must mention the associated bountied issue, be authored by you and merged by a maintainer. We found the following linked pull requests that do not meet the above criteria: ${pullRequests}`
 	};
 };
 
