@@ -2,7 +2,6 @@
 const main = require('./main');
 const ethers = require('ethers');
 
-const checkWithdrawalEligibility = require('./lib/checkWithdrawalEligibility');
 const OPENQ_ABI = require('./OpenQABI.json');
 
 // Autotask Entrypoint - constructs signer and contract using Relay
@@ -36,7 +35,7 @@ if (require.main === module) {
 	const app = express();
 	app.use(express.json());
 
-	app.post('/', async (req, res, next) => {
+	app.post('/', async (req, res) => {
 		// Construct local signer
 		const provider = new ethers.providers.JsonRpcProvider(process.env.PROVIDER_URL);
 		const contract = new ethers.Contract(process.env.OPENQ_ADDRESS, OPENQ_ABI, provider);
@@ -73,14 +72,14 @@ if (require.main === module) {
 			// The result in production is stringidied, so we do that here
 			// https://docs.openzeppelin.com/defender/autotasks#webhook-handler
 			const autotaskResult = {
-				"autotaskRunId": "37a91eba-9a6a-4404-95e4-38d178ba69ed",
-				"autotaskId": "19ef0257-bba4-4723-a18f-67d96726213e",
-				"trigger": "webhook",
-				"status": "success",
-				"createdAt": "2021-02-23T18:49:14.812Z",
-				"encodedLogs": "U1RBU...cwkK",
-				"result": JSON.stringify(result),
-				"requestId": "e7979150-44d3-4021-926c-9d9679788eb8"
+				'autotaskRunId': '37a91eba-9a6a-4404-95e4-38d178ba69ed',
+				'autotaskId': '19ef0257-bba4-4723-a18f-67d96726213e',
+				'trigger': 'webhook',
+				'status': 'success',
+				'createdAt': '2021-02-23T18:49:14.812Z',
+				'encodedLogs': 'U1RBU...cwkK',
+				'result': JSON.stringify(result),
+				'requestId': 'e7979150-44d3-4021-926c-9d9679788eb8'
 			};
 
 			res.status(200).send(autotaskResult);

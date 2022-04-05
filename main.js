@@ -1,40 +1,40 @@
-const cookie = require('cookie-signature');
-const { NO_GITHUB_OAUTH_TOKEN, INVALID_GITHUB_OAUTH_TOKEN, BOUNTY_IS_CLAIMED } = require('./errors');
 const checkWithdrawalEligibilityImpl = require('./lib/checkWithdrawalEligibility');
+const validateSignedOauthTokenImpl = require('./lib/validateSignedOauthToken');
+const { BOUNTY_IS_CLAIMED } = require('./errors');
 
-const main = async (event, contract, checkWithdrawalEligibility = checkWithdrawalEligibilityImpl) => {
+const main = async (
+	event,
+	contract,
+	checkWithdrawalEligibility = checkWithdrawalEligibilityImpl,
+	validateSignedOauthToken = validateSignedOauthTokenImpl
+) => {
 	return new Promise(async (resolve, reject) => {
-		const cookieSigner = event.secrets.COOKIE_SIGNER;
 		const { issueUrl, payoutAddress } = event.request.body;
+		console.log(`Attempting claim on ${issueUrl} to ${payoutAddress}`);
 
-		let signedOAuthToken;
-		if (event.request.headers) {
-			signedOAuthToken = event.request.headers['x-authorization'];
-			if (!signedOAuthToken) {
-				return reject(NO_GITHUB_OAUTH_TOKEN({ payoutAddress }));
-			}
-		} else {
-			return reject(NO_GITHUB_OAUTH_TOKEN({ payoutAddress }));
-		}
-
-		const oauthToken = cookie.unsign(signedOAuthToken.slice(2), cookieSigner);
-
-		if (!oauthToken) {
-			return reject(INVALID_GITHUB_OAUTH_TOKEN({ payoutAddress }));
+		let oauthToken;
+		try {
+			oauthToken = await validateSignedOauthToken(payoutAddress, event);
+		} catch (error) {
+			return reject(error);
 		}
 
 		try {
 			const { canWithdraw, issueId } = await checkWithdrawalEligibility(issueUrl, oauthToken);
 			const issueIsOpen = await contract.bountyIsOpen(issueId);
 
-			if (issueIsOpen) {
+			if (canWithdraw && issueIsOpen) {
 				const options = { gasLimit: 3000000 };
 				const txn = await contract.claimBounty(issueId, payoutAddress, options);
+
+				console.log(`Can withdraw. Transaction hash is ${txn.hash}`);
 				resolve({ txnHash: txn.hash, issueId });
 			} else {
+				console.error(BOUNTY_IS_CLAIMED({ issueUrl, payoutAddress }));
 				reject(BOUNTY_IS_CLAIMED({ issueUrl, payoutAddress }));
 			}
 		} catch (error) {
+			console.error(error);
 			reject(error);
 		}
 	});
