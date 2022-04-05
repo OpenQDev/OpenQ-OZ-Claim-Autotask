@@ -54,7 +54,7 @@ const NO_CLOSER_COMMENT_AT_MERGE_TIME = ({ issueId }) => {
 };
 
 const NO_PULL_REQUESTS_REFERENCE_ISSUE = ({ issueId }) => {
-	return { issueId, canWithdraw: false, type: 'NO_PULL_REQUESTS_REFERENCE_ISSUE', errorMessage: 'There are no pull requests linked to this issue.' };
+	return { issueId, canWithdraw: false, type: 'NO_PULL_REQUESTS_REFERENCE_ISSUE', errorMessage: 'No pull requests reference this issue.' };
 };
 
 module.exports = {

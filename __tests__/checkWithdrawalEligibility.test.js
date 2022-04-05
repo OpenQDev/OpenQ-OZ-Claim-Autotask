@@ -46,7 +46,7 @@ describe('checkWithdrawalEligibility', () => {
 					.onPost('https://api.github.com/graphql')
 					.replyOnce(200, issuePrData);
 
-				await expect(checkWithdrawalEligibility(issueUrl, oauthToken)).rejects.toEqual({ canWithdraw: false, errorMessage: 'There are no pull requests linked to this issue.', issueId: 'I_kwDOGWnnz85GZu4Y', type: 'NO_PULL_REQUESTS_REFERENCE_ISSUE' });
+				await expect(checkWithdrawalEligibility(issueUrl, oauthToken)).rejects.toEqual({ canWithdraw: false, errorMessage: 'No pull requests reference this issue.', issueId: 'I_kwDOGWnnz85GZu4Y', type: 'NO_PULL_REQUESTS_REFERENCE_ISSUE' });
 			});
 
 			it('should resolve with NO_WITHDRAWABLE_PR_FOUND if Pull Request references but is NOT MERGED', async () => {
