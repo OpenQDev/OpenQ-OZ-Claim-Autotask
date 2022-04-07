@@ -4,17 +4,17 @@ Add your admin API_KEY and API_SECRET to your .env file
 
 DEVELOPMENT
 ```bash
-defender-autotask update-code aabc7005-3f05-40cf-af97-8a565bcb892e .
+defender-autotask update-code <AUTOTASK_ID_STAGING> .
 ```
 
 STAGING
 ```bash
-defender-autotask update-code c09dad72-cf2b-40d7-a2bc-6d3b630eaf8f .
+defender-autotask update-code <AUTOTASK_ID_STAGING> .
 ```
 
 PRODUCTION
 ```bash
-<GET FROM ADMIN>
+defender-autotask update-code <AUTOTASK_ID_PRODUCTION> .
 ```
 
 Running Locally
