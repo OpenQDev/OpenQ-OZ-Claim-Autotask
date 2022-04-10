@@ -4,7 +4,7 @@ Add your admin API_KEY and API_SECRET to your .env file
 
 DEVELOPMENT
 ```bash
-defender-autotask update-code <AUTOTASK_ID_STAGING> .
+defender-autotask update-code <AUTOTASK_ID_DEVELOPMENT> .
 ```
 
 STAGING
