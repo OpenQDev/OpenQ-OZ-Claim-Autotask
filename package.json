@@ -12,11 +12,6 @@
 	"license": "ISC",
 	"dependencies": {
 		"axios": "^0.26.0",
-		"cookie-signature": "^1.2.0",
-		"eslint": "^8.13.0",
-		"eslint-plugin-unused-imports": "^2.0.0",
-		"gql": "^1.1.2",
-		"graphql": "^16.3.0",
-		"graphql-tag": "^2.12.6"
+		"cookie-signature": "^1.2.0"
 	}
 }
