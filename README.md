@@ -4,7 +4,7 @@ Add your admin API_KEY and API_SECRET to your .env file
 
 DEVELOPMENT
 ```bash
-defender-autotask update-code <AUTOTASK_ID_STAGING> .
+defender-autotask update-code <AUTOTASK_ID_DEVELOPMENT> .
 ```
 
 STAGING
@@ -31,7 +31,6 @@ Remove them before push to remote.
 		"express": "^4.17.2",
 		"nodemon": "^2.0.15",
 		"defender-relay-client": "1.11.1",
-		"jest": "^27.4.7",
-		"lodash": "^4.17.21"
+		"jest": "^27.4.7"
 	}
 ```

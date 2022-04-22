@@ -7,7 +7,7 @@ const OPENQ_ABI = require('./OpenQABI.json');
 // Autotask Entrypoint - constructs signer and contract using Relay
 exports.handler = async (event) => {
 	// Must change this secret name based on environment you are deploying to
-	let OPENQ_ADDRESS = event.secrets.OPENQ_ADDRESS_PRODUCTION;
+	let OPENQ_PROXY_ADDRESS = event.secrets.OPENQ_PROXY_ADDRESS_PRODUCTION;
 	const { DefenderRelayProvider, DefenderRelaySigner } = require('defender-relay-client/lib/ethers');
 	const { ethers } = require('ethers');
 
@@ -16,7 +16,7 @@ exports.handler = async (event) => {
 	const signer = new DefenderRelaySigner(event, provider, { speed: 'fastest' });
 
 	// Prepare OpenQ Contract for call
-	const openQ = new ethers.Contract(OPENQ_ADDRESS, OPENQ_ABI, signer);
+	const openQ = new ethers.Contract(OPENQ_PROXY_ADDRESS, OPENQ_ABI, signer);
 
 	// We then run the main logic in the main function
 	try {
@@ -39,7 +39,7 @@ if (require.main === module) {
 	app.post('/', async (req, res) => {
 		// Construct local signer
 		const provider = new ethers.providers.JsonRpcProvider(process.env.PROVIDER_URL);
-		const contract = new ethers.Contract(process.env.OPENQ_ADDRESS, OPENQ_ABI, provider);
+		const contract = new ethers.Contract(process.env.OPENQ_PROXY_ADDRESS, OPENQ_ABI, provider);
 		const wallet = new ethers.Wallet(process.env.ORACLE_PRIVATE_KEY, provider);
 		const contractWithWallet = contract.connect(wallet);
 
@@ -60,7 +60,7 @@ if (require.main === module) {
 			},
 			secrets: {
 				COOKIE_SIGNER: process.env.COOKIE_SIGNER,
-				OPENQ_ADDRESS: process.env.OPENQ_ADDRESS
+				OPENQ_PROXY_ADDRESS: process.env.OPENQ_PROXY_ADDRESS
 			},
 			apiKey,
 			apiSecret,
