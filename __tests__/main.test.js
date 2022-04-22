@@ -1,6 +1,5 @@
 const axios = require('axios');
 const MockAdapter = require('axios-mock-adapter');
-const _ = require('lodash');
 
 const main = require('../main');
 const { NO_GITHUB_OAUTH_TOKEN, INVALID_GITHUB_OAUTH_TOKEN, BOUNTY_IS_CLAIMED } = require('../errors');
