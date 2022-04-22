@@ -60,7 +60,7 @@ if (require.main === module) {
 			},
 			secrets: {
 				COOKIE_SIGNER: process.env.COOKIE_SIGNER,
-				OPENQ_PROXY_ADDRESS
+				OPENQ_PROXY_ADDRESS: process.env.OPENQ_PROXY_ADDRESS
 			},
 			apiKey,
 			apiSecret,
