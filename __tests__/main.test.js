@@ -34,7 +34,7 @@ describe('main', () => {
 			},
 			secrets: {
 				COOKIE_SIGNER,
-				OPENQ_ADDRESS: OPENQ_PROXY_ADDRESS
+				OPENQ_PROXY_ADDRESS
 			},
 			apiKey,
 			apiSecret,
@@ -51,7 +51,7 @@ describe('main', () => {
 			},
 			secrets: {
 				COOKIE_SIGNER,
-				OPENQ_ADDRESS: OPENQ_PROXY_ADDRESS
+				OPENQ_PROXY_ADDRESS
 			},
 			apiKey,
 			apiSecret,
@@ -71,7 +71,7 @@ describe('main', () => {
 			},
 			secrets: {
 				COOKIE_SIGNER,
-				OPENQ_ADDRESS: OPENQ_PROXY_ADDRESS
+				OPENQ_PROXY_ADDRESS
 			},
 			apiKey,
 			apiSecret,
@@ -93,7 +93,7 @@ describe('main', () => {
 			},
 			secrets: {
 				COOKIE_SIGNER,
-				OPENQ_ADDRESS: OPENQ_PROXY_ADDRESS
+				OPENQ_PROXY_ADDRESS
 			},
 			apiKey,
 			apiSecret,
