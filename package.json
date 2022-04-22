@@ -12,20 +12,6 @@
 	"license": "ISC",
 	"dependencies": {
 		"axios": "^0.26.0",
-		"cookie-signature": "^1.2.0",
-		"eslint": "^8.13.0",
-		"eslint-plugin-unused-imports": "^2.0.0",
-		"gql": "^1.1.2",
-		"graphql": "^16.3.0",
-		"graphql-tag": "^2.12.6"
-	},
-	"devDependencies": {
-		"axios-mock-adapter": "^1.20.0",
-		"defender-relay-client": "1.11.1",
-		"dotenv": "^14.3.2",
-		"ethers": "5.4.1",
-		"express": "^4.17.2",
-		"jest": "^27.4.7",
-		"nodemon": "^2.0.15"
+		"cookie-signature": "^1.2.0"
 	}
 }
