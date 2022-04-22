@@ -11,8 +11,8 @@
 	"author": "",
 	"license": "ISC",
 	"dependencies": {
-		"axios": "^0.25.0",
-		"cookie-signature": "^1.1.0",
+		"axios": "^0.26.0",
+		"cookie-signature": "^1.2.0",
 		"eslint": "^8.13.0",
 		"eslint-plugin-unused-imports": "^2.0.0",
 		"gql": "^1.1.2",
