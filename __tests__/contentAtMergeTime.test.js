@@ -4,16 +4,18 @@ describe('contentAtMergeTime', () => {
 	it('returns body if bodyEdits is empty (AKA body was unedited)', () => {
 		const pullRequestCreatedAt = '2022-03-27T20:03:33Z';
 		const mergedAt = '2022-03-27T20:03:50Z';
+		const merged = false;
 		const body = 'Closes #125';
 		const bodyEdits = [];
 
-		const result = contentAtMergeTime(mergedAt, body, bodyEdits, pullRequestCreatedAt);
+		const result = contentAtMergeTime(merged, mergedAt, body, bodyEdits, pullRequestCreatedAt);
 		expect(result).toEqual(body);
 	});
 
 	it('returns latest bodyText before the merge', () => {
 		const pullRequestCreatedAt = '2022-03-27T20:02:33Z';
 		const mergedAt = '2022-03-27T20:03:50Z';
+		const merged = false;
 
 		const body = '';
 		const bodyEdits = [
@@ -37,13 +39,14 @@ describe('contentAtMergeTime', () => {
 			}
 		];
 
-		const result = contentAtMergeTime(mergedAt, body, bodyEdits, pullRequestCreatedAt);
+		const result = contentAtMergeTime(merged, mergedAt, body, bodyEdits, pullRequestCreatedAt);
 		expect(result).toEqual(body);
 	});
 
 	it('returns latest bodyText before the merge', () => {
 		const pullRequestCreatedAt = '2022-03-27T21:26:06Z';
 		const mergedAt = '2022-03-27T21:26:28Z';
+		const merged = false;
 
 		const bodyEdits = [
 			{
@@ -75,7 +78,7 @@ describe('contentAtMergeTime', () => {
 		const currentBody = 'After merge...';
 		const finalAtTimeOfMergeBody = 'Closes #134';
 
-		const result = contentAtMergeTime(mergedAt, currentBody, bodyEdits, pullRequestCreatedAt);
+		const result = contentAtMergeTime(merged, mergedAt, currentBody, bodyEdits, pullRequestCreatedAt);
 		expect(result).toEqual(finalAtTimeOfMergeBody);
 	});
 });
