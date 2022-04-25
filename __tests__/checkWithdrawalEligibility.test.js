@@ -14,6 +14,7 @@ describe('checkWithdrawalEligibility', () => {
 
 	/* LIVE EXAMPLE ISSUES
 	const issueReferencedAndMergedByFlacoJones = 'https://github.com/OpenQDev/OpenQ-TestRepo/issues/136';
+	const commentUpdatedAfterMerge = 'https://github.com/OpenQDev/OpenQ-TestRepo/pull/178'
 	*/
 
 	beforeAll(() => {
