@@ -6,7 +6,7 @@
 	"scripts": {
 		"start:dev": "nodemon index.js",
 		"test": "jest",
-		"test:int": "jest -t 'Claim Integration Test'"
+		"test:int": "jest -t 'main-integration'"
 	},
 	"keywords": [],
 	"author": "",
@@ -24,6 +24,7 @@
 		"ethers": "5.4.1",
 		"express": "^4.17.2",
 		"jest": "^27.4.7",
+		"lodash": "^4.17.21",
 		"nodemon": "^2.0.15"
 	}
 }

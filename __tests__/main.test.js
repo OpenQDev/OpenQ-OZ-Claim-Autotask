@@ -1,19 +1,21 @@
 const axios = require('axios');
 const MockAdapter = require('axios-mock-adapter');
+const dotenv = require('dotenv');
 
 const main = require('../main');
 const { NO_GITHUB_OAUTH_TOKEN, INVALID_GITHUB_OAUTH_TOKEN, BOUNTY_IS_CLAIMED } = require('../errors');
 
 describe('main', () => {
+	dotenv.config();
 	let event;
 	let mock;
 	let payoutAddress = '0x1abc0D6fb0d5A374027ce98Bf15716A3Ee31e580';
-	let issueUrl = 'https://github.com/OpenQDev/OpenQ-TestRepo/issues/53';
-	let validSignedOAuthToken = 's:gho_sd34fd.1KAuAkesI8Mt6/1Vc0Gs1EtYI/54zJatUWL8E407YQU';
-	let COOKIE_SIGNER = 'entropydfnjd23';
-	let OPENQ_PROXY_ADDRESS = '0xCf7Ed3AccA5a467e9e704C703E8D87F634fB0Fc9';
 	let apiKey = 'mockApiKey';
 	let apiSecret = 'mockApiSecret';
+
+	// Test Issues
+	let issueUrl = 'https://github.com/OpenQDev/OpenQ-TestRepo/issues/53';
+	const issueReferencedAndMergedByFlacoJones = 'https://github.com/OpenQDev/OpenQ-TestRepo/issues/136';
 
 	beforeAll(() => {
 		mock = new MockAdapter(axios);
@@ -29,12 +31,12 @@ describe('main', () => {
 					payoutAddress
 				},
 				headers: {
-					'X-Authorization': validSignedOAuthToken
+					'X-Authorization': process.env.SIGNED_OAUTH_TOKEN
 				}
 			},
 			secrets: {
-				COOKIE_SIGNER,
-				OPENQ_PROXY_ADDRESS
+				COOKIE_SIGNER: process.env.COOKIE_SIGNER,
+				OPENQ_PROXY_ADDRESS: process.env.OPENQ_PROXY_ADDRESS
 			},
 			apiKey,
 			apiSecret,
@@ -50,8 +52,8 @@ describe('main', () => {
 				}
 			},
 			secrets: {
-				COOKIE_SIGNER,
-				OPENQ_PROXY_ADDRESS
+				COOKIE_SIGNER: process.env.COOKIE_SIGNER,
+				OPENQ_PROXY_ADDRESS: process.env.OPENQ_PROXY_ADDRESS
 			},
 			apiKey,
 			apiSecret,
@@ -70,8 +72,8 @@ describe('main', () => {
 				}
 			},
 			secrets: {
-				COOKIE_SIGNER,
-				OPENQ_PROXY_ADDRESS
+				COOKIE_SIGNER: process.env.COOKIE_SIGNER,
+				OPENQ_PROXY_ADDRESS: process.env.OPENQ_PROXY_ADDRESS
 			},
 			apiKey,
 			apiSecret,
@@ -92,8 +94,8 @@ describe('main', () => {
 				}
 			},
 			secrets: {
-				COOKIE_SIGNER,
-				OPENQ_PROXY_ADDRESS
+				COOKIE_SIGNER: process.env.COOKIE_SIGNER,
+				OPENQ_PROXY_ADDRESS: process.env.OPENQ_PROXY_ADDRESS
 			},
 			apiKey,
 			apiSecret,
@@ -102,7 +104,7 @@ describe('main', () => {
 		await expect(main(event, {})).rejects.toEqual(INVALID_GITHUB_OAUTH_TOKEN({ payoutAddress }));
 	});
 
-	it.only('should reject with BOUNTY_IS_CLAIMED if issue was closed by user, but bounty is already claimed', async () => {
+	it('should reject with BOUNTY_IS_CLAIMED if issue was closed by user, but bounty is already claimed', async () => {
 		// ARRANGE
 
 		// Set up mocks for checkWithdrawalEligibility, validateSignedOauthToken and OpenQ contract
@@ -146,5 +148,30 @@ describe('main', () => {
 
 		// MockOpenQContract defaults to return 0x123abc when claimBounty is called
 		await expect(main(event, MockOpenQContract, checkWithdrawalEligibility, validateSignedOauthToken)).resolves.toEqual({ txnHash: '0x123abc', issueId: 'mockIssueId' });
+	});
+
+	it.only('should reject if closer comment after merge', async () => {
+		event = {
+			request: {
+				body: {
+					issueUrl,
+					payoutAddress
+				},
+				headers: {
+					'x-authorization': process.env.SIGNED_OAUTH_TOKEN
+				}
+			},
+			secrets: {
+				COOKIE_SIGNER: process.env.COOKIE_SIGNER,
+				OPENQ_PROXY_ADDRESS: process.env.OPENQ_PROXY_ADDRESS
+			},
+			apiKey,
+			apiSecret,
+		};
+
+		const MockOpenQContract = require('../__mocks__/MockOpenQContract');
+		MockOpenQContract.isOpen = true;
+
+		await expect(main(event, MockOpenQContract)).resolves.toEqual({ txnHash: '0x123abc', issueId: 'mockIssueId' });
 	});
 });
