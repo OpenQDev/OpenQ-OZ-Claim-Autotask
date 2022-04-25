@@ -12,11 +12,6 @@ describe('checkWithdrawalEligibility', () => {
 	let oauthToken = 'oAuthToken';
 	let mock;
 
-	/* LIVE EXAMPLE ISSUES
-	const issueReferencedAndMergedByFlacoJones = 'https://github.com/OpenQDev/OpenQ-TestRepo/issues/136';
-	const commentUpdatedAfterMerge = 'https://github.com/OpenQDev/OpenQ-TestRepo/pull/178'
-	*/
-
 	beforeAll(() => {
 		mock = new MockAdapter(axios);
 	});
