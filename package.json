@@ -6,7 +6,7 @@
 	"scripts": {
 		"start:dev": "nodemon index.js",
 		"test": "jest",
-		"test:int": "jest -t 'main-integration'"
+		"test:int": "jest -t 'main'"
 	},
 	"keywords": [],
 	"author": "",
