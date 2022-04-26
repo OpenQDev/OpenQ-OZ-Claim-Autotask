@@ -34,6 +34,9 @@ describe('main', () => {
 	// MULTIPLE REQUEST REFERNECES
 	const multiplePullRequestReferences = 'https://github.com/OpenQDev/OpenQ-TestRepo/issues/190';
 
+	// 'RELATED TO' REQUEST REFERNECES
+	const relatedToPullRequestReference = 'https://github.com/OpenQDev/OpenQ-TestRepo/issues/197';
+
 	// NOT MERGED
 	const referencedButNotMerged = 'https://github.com/OpenQDev/OpenQ-TestRepo/issues/139';
 
@@ -133,7 +136,7 @@ describe('main', () => {
 		});
 	});
 
-	describe('MULTIPLE or NO REFERENCES', () => {
+	describe('MULTIPLE or NO or NON-CLOSER REFERENCES', () => {
 		it('should reject with NO_PULL_REQUESTS_REFERENCE_ISSUE if no pull request references the issue', async () => {
 			const obj = { request: { body: { issueUrl: noPullRequestReferences } } };
 			event = _.merge(event, obj);
@@ -142,6 +145,16 @@ describe('main', () => {
 			MockOpenQContract.isOpen = true;
 
 			await expect(main(event, MockOpenQContract)).rejects.toEqual({ canWithdraw: false, errorMessage: 'No pull requests reference this issue.', issueId: 'I_kwDOGWnnz85Iaa3I', type: 'NO_PULL_REQUESTS_REFERENCE_ISSUE' });
+		});
+
+		it('should reject with NO_PULL_REQUESTS_REFERENCE_ISSUE if a pull request references this issue using non-closer keywords', async () => {
+			const obj = { request: { body: { issueUrl: relatedToPullRequestReference } } };
+			event = _.merge(event, obj);
+
+			const MockOpenQContract = require('../__mocks__/MockOpenQContract');
+			MockOpenQContract.isOpen = true;
+
+			await expect(main(event, MockOpenQContract)).rejects.toEqual({ canWithdraw: false, errorMessage: 'No withdrawable PR found.  In order for a pull request to unlock a claim, it must mention the associated bountied issue, be authored by you and merged by a maintainer. We found the following linked pull requests that do not meet the above criteria: https://github.com/OpenQDev/OpenQ-TestRepo/pull/198', issueId: 'I_kwDOGWnnz85Ibz0R', type: 'NO_WITHDRAWABLE_PR_FOUND' });
 		});
 
 		it('should resolve with issueId and txnHash for properly referenced issue - multiple pull request references, second one valid', async () => {
