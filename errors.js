@@ -38,8 +38,8 @@ const BOUNTY_IS_CLAIMED = ({ issueUrl, payoutAddress }) => {
 	return { canWithdraw: false, id: payoutAddress, type: 'BOUNTY_IS_CLAIMED', errorMessage: `Bounty for ${issueUrl} is already claimed` };
 };
 
-const UNKNOWN_ERROR = ({ issueId, error }) => {
-	return { issueId, canWithdraw: false, type: 'UNKNOWN_ERROR', errorMessage: JSON.stringify(error) };
+const UNKNOWN_ERROR = ({ issueUrl, error }) => {
+	return { issueUrl, canWithdraw: false, type: 'UNKNOWN_ERROR', errorMessage: JSON.stringify(error) };
 };
 
 const NO_WITHDRAWABLE_PR_FOUND = ({ issueId, referencedPrs }) => {
