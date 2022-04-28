@@ -52,7 +52,7 @@ describe('checkWithdrawalEligibility', () => {
 					.onPost('https://api.github.com/graphql')
 					.replyOnce(200, issuePrData);
 
-				await expect(checkWithdrawalEligibility(issueUrl, oauthToken)).rejects.toEqual({ canWithdraw: false, errorMessage: 'No withdrawable PR found.  In order for a PR to qualify for claim it needs to be connected to the issue by a maintainer and merged by YOU. We found the following linked pull requests that do not meet the above criteria: https://github.com/OpenQDev/OpenQ-TestRepo/pull/140', issueId: 'I_kwDOGWnnz85GkCSK', type: 'NO_WITHDRAWABLE_PR_FOUND' });
+				await expect(checkWithdrawalEligibility(issueUrl, oauthToken)).rejects.toEqual({ canWithdraw: false, errorMessage: 'No withdrawable PR found.  In order for a pull request to unlock a claim, it must mention the associated bountied issue, be authored by you and merged by a maintainer. We found the following linked pull requests that do not meet the above criteria: https://github.com/OpenQDev/OpenQ-TestRepo/pull/140', issueId: 'I_kwDOGWnnz85GkCSK', type: 'NO_WITHDRAWABLE_PR_FOUND' });
 			});
 
 			it('should resolve with NO_WITHDRAWABLE_PR_FOUND if Pull Request is referenced and merged, but NOT AUTHORED BY VIEWER', async () => {
@@ -62,7 +62,7 @@ describe('checkWithdrawalEligibility', () => {
 					.onPost('https://api.github.com/graphql')
 					.replyOnce(200, issuePrData);
 
-				await expect(checkWithdrawalEligibility(issueUrl, oauthToken)).rejects.toEqual({ canWithdraw: false, errorMessage: 'No withdrawable PR found.  In order for a PR to qualify for claim it needs to be connected to the issue by a maintainer and merged by YOU. We found the following linked pull requests that do not meet the above criteria: https://github.com/OpenQDev/OpenQ-TestRepo/pull/140', issueId: 'I_kwDOGWnnz85GkCSK', type: 'NO_WITHDRAWABLE_PR_FOUND' });
+				await expect(checkWithdrawalEligibility(issueUrl, oauthToken)).rejects.toEqual({ canWithdraw: false, errorMessage: 'No withdrawable PR found.  In order for a pull request to unlock a claim, it must mention the associated bountied issue, be authored by you and merged by a maintainer. We found the following linked pull requests that do not meet the above criteria: https://github.com/OpenQDev/OpenQ-TestRepo/pull/140', issueId: 'I_kwDOGWnnz85GkCSK', type: 'NO_WITHDRAWABLE_PR_FOUND' });
 			});
 
 			it('should resolve with NO_WITHDRAWABLE_PR_FOUND if Pull Request is referenced and merged, but CLOSER COMMENT NOT PRESENT AT MERGE TIME', async () => {
@@ -72,12 +72,12 @@ describe('checkWithdrawalEligibility', () => {
 					.onPost('https://api.github.com/graphql')
 					.replyOnce(200, issuePrData);
 
-				await expect(checkWithdrawalEligibility(issueUrl, oauthToken)).rejects.toEqual({ canWithdraw: false, errorMessage: 'No withdrawable PR found.  In order for a PR to qualify for claim it needs to be connected to the issue by a maintainer and merged by YOU. We found the following linked pull requests that do not meet the above criteria: https://github.com/OpenQDev/OpenQ-TestRepo/pull/140', issueId: 'I_kwDOGWnnz85GkCSK', type: 'NO_WITHDRAWABLE_PR_FOUND' });
+				await expect(checkWithdrawalEligibility(issueUrl, oauthToken)).rejects.toEqual({ canWithdraw: false, errorMessage: 'No withdrawable PR found.  In order for a pull request to unlock a claim, it must mention the associated bountied issue, be authored by you and merged by a maintainer. We found the following linked pull requests that do not meet the above criteria: https://github.com/OpenQDev/OpenQ-TestRepo/pull/140', issueId: 'I_kwDOGWnnz85GkCSK', type: 'NO_WITHDRAWABLE_PR_FOUND' });
 			});
 		});
 
 		describe('Eligible Response', () => {
-			it.only('should resolve to with canWithdraw: true if eligible pull request is connected in BODY', async () => {
+			it('should resolve to with canWithdraw: true if eligible pull request is connected in BODY', async () => {
 				const issuePrData = { data: { viewer: { login: 'FlacoJones' }, resource: { id: 'I_kwDOGWnnz85GjwA1', number: 136, repository: { owner: { login: 'OpenQDev' } }, timelineItems: { edges: [{ node: { createdAt: '2022-03-28T17:47:26Z', source: { __typename: 'PullRequest', bodyText: 'This Closes #136 and also unrelated thing of Fixes #137', mergedAt: '2022-03-28T17:57:44Z', createdAt: '2022-03-28T17:47:26Z', userContentEdits: { edges: [] }, comments: { edges: [] }, merged: true, url: 'https://github.com/OpenQDev/OpenQ-TestRepo/pull/138', author: { login: 'FlacoJones' }, baseRepository: { name: 'OpenQ-TestRepo', owner: { login: 'OpenQDev' } } } } }] } } } };
 
 				mock
