@@ -53,7 +53,8 @@ describe('main', () => {
 			},
 			secrets: {
 				COOKIE_SIGNER: process.env.COOKIE_SIGNER,
-				OPENQ_PROXY_ADDRESS: process.env.OPENQ_PROXY_ADDRESS
+				OPENQ_PROXY_ADDRESS: process.env.OPENQ_PROXY_ADDRESS,
+				PAT: process.env.PAT
 			},
 			apiKey,
 			apiSecret,
@@ -61,7 +62,7 @@ describe('main', () => {
 	});
 
 	describe('NOT MERGED', () => {
-		it.only('should reject if pull request is not merged', async () => {
+		it('should reject if pull request is not merged', async () => {
 			const obj = { request: { body: { issueUrl: referencedButNotMerged } } };
 			event = _.merge(event, obj);
 
