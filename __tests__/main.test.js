@@ -61,7 +61,7 @@ describe('main', () => {
 	});
 
 	describe('NOT MERGED', () => {
-		it('should reject if pull request is not merged', async () => {
+		it.only('should reject if pull request is not merged', async () => {
 			const obj = { request: { body: { issueUrl: referencedButNotMerged } } };
 			event = _.merge(event, obj);
 
