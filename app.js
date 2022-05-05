@@ -32,7 +32,8 @@ app.post('/', async (req, res) => {
 		},
 		secrets: {
 			COOKIE_SIGNER: process.env.COOKIE_SIGNER,
-			OPENQ_PROXY_ADDRESS: process.env.OPENQ_PROXY_ADDRESS
+			OPENQ_PROXY_ADDRESS: process.env.OPENQ_PROXY_ADDRESS,
+			PAT: process.env.PAT
 		},
 		apiKey,
 		apiSecret,
