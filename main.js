@@ -20,7 +20,7 @@ const main = async (
 		}
 
 		try {
-			const { canWithdraw, issueId } = await checkWithdrawalEligibility(issueUrl, oauthToken);
+			const { canWithdraw, issueId } = await checkWithdrawalEligibility(issueUrl, oauthToken, event.secrets.PAT);
 			const issueIsOpen = await contract.bountyIsOpen(issueId);
 
 			if (canWithdraw && issueIsOpen) {
