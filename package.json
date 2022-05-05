@@ -6,7 +6,8 @@
 	"scripts": {
 		"start:dev": "nodemon index.js",
 		"test": "jest",
-		"test:int": "jest -t 'main'"
+		"test:int": "jest -t 'main'",
+		"test:withdraw": "jest -t 'checkWithdrawalEligibility'"
 	},
 	"keywords": [],
 	"author": "",
