@@ -36,3 +36,14 @@ Remove them before push to remote.
 		"eslint-plugin-unused-imports": "^2.0.0"
 	}
 ```
+
+## TESTING
+
+To test, you will need:
+
+### Signing your OAuth cookie
+
+It must be signed by `COOKIE_SIGNER="entropydfnjd23"`
+
+Boot locally. Log in. Get cookie from `Application -> Cookies` then use [URL Decode/Encode](https://www.urldecoder.org/) to decode it.
+
