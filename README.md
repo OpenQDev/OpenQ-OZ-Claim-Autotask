@@ -36,3 +36,24 @@ Remove them before push to remote.
 		"eslint-plugin-unused-imports": "^2.0.0"
 	}
 ```
+
+## TESTING
+
+To test, you will need:
+
+```bash
+OAUTH_TOKEN=
+SIGNED_OAUTH_TOKEN=
+PAT=
+COOKIE_SIGNER="entropydfnjd23"
+```
+
+### Get an OAuth Token Signed with the same COOKIE_SIGNER
+
+The easiest way to do this is to:
+
+1. Boot locally with the [OpenQ-Fullstack](https://github.com/openqdev/openq-fullstack)
+2. Sign in with GitHub
+3. Get cookie from `Application -> Cookies`
+4. Use [URL Decode/Encode](https://www.urldecoder.org/) to decode it.
+
