@@ -3,13 +3,18 @@
 		"inputs": [
 			{
 				"internalType": "string",
-				"name": "_id",
+				"name": "_bountyId",
 				"type": "string"
 			},
 			{
 				"internalType": "address",
-				"name": "_payoutAddress",
+				"name": "_closer",
 				"type": "address"
+			},
+			{
+				"internalType": "string",
+				"name": "_closerData",
+				"type": "string"
 			}
 		],
 		"name": "claimBounty",
