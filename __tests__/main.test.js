@@ -81,7 +81,7 @@ describe('main', () => {
 			const MockOpenQContract = require('../__mocks__/MockOpenQContract');
 			MockOpenQContract.isOpen = true;
 
-			await expect(main(event, MockOpenQContract)).resolves.toEqual({ issueId: 'I_kwDOGWnnz85GjwA1', txnHash: '0x123abc' });
+			await expect(main(event, MockOpenQContract)).resolves.toEqual({ issueId: 'I_kwDOGWnnz85GjwA1', claimantPullRequestUrl: "https://github.com/OpenQDev/OpenQ-TestRepo/pull/138", txnHash: '0x123abc' });
 		});
 
 		it('should resolve with issueId and txnHash for properly referenced issue - pull request body, pre-merge edits', async () => {
@@ -91,7 +91,7 @@ describe('main', () => {
 			const MockOpenQContract = require('../__mocks__/MockOpenQContract');
 			MockOpenQContract.isOpen = true;
 
-			await expect(main(event, MockOpenQContract)).resolves.toEqual({ issueId: 'I_kwDOGWnnz85IbulA', txnHash: '0x123abc' });
+			await expect(main(event, MockOpenQContract)).resolves.toEqual({ issueId: 'I_kwDOGWnnz85IbulA', claimantPullRequestUrl: "https://github.com/OpenQDev/OpenQ-TestRepo/pull/181", txnHash: '0x123abc' });
 		});
 
 		it('should reject with  NO_WITHDRAWABLE_PR_FOUND for post-merge body references - pull request body, post-merge edits', async () => {
@@ -123,7 +123,7 @@ describe('main', () => {
 			const MockOpenQContract = require('../__mocks__/MockOpenQContract');
 			MockOpenQContract.isOpen = true;
 
-			await expect(main(event, MockOpenQContract)).resolves.toEqual({ issueId: 'I_kwDOGWnnz85IbwJy', txnHash: '0x123abc' });
+			await expect(main(event, MockOpenQContract)).resolves.toEqual({ issueId: 'I_kwDOGWnnz85IbwJy', claimantPullRequestUrl: "https://github.com/OpenQDev/OpenQ-TestRepo/pull/187", txnHash: '0x123abc' });
 		});
 
 		it('should resolve with issueId and txnHash for properly referenced issue - pull request comment, pre-merge edits', async () => {
@@ -133,7 +133,7 @@ describe('main', () => {
 			const MockOpenQContract = require('../__mocks__/MockOpenQContract');
 			MockOpenQContract.isOpen = true;
 
-			await expect(main(event, MockOpenQContract)).resolves.toEqual({ issueId: 'I_kwDOGWnnz85Ibw9J', txnHash: '0x123abc' });
+			await expect(main(event, MockOpenQContract)).resolves.toEqual({ issueId: 'I_kwDOGWnnz85Ibw9J', claimantPullRequestUrl: "https://github.com/OpenQDev/OpenQ-TestRepo/pull/189", txnHash: '0x123abc' });
 		});
 	});
 
@@ -165,7 +165,7 @@ describe('main', () => {
 			const MockOpenQContract = require('../__mocks__/MockOpenQContract');
 			MockOpenQContract.isOpen = true;
 
-			await expect(main(event, MockOpenQContract)).resolves.toEqual({ issueId: 'I_kwDOGWnnz85Ibxky', txnHash: '0x123abc' });
+			await expect(main(event, MockOpenQContract)).resolves.toEqual({ issueId: 'I_kwDOGWnnz85Ibxky', claimantPullRequestUrl: "https://github.com/OpenQDev/OpenQ-TestRepo/pull/192", txnHash: '0x123abc' });
 		});
 	});
 });

@@ -20,18 +20,18 @@ const main = async (
 		}
 
 		try {
-			const { canWithdraw, issueId, claimantPullRequest } = await checkWithdrawalEligibility(issueUrl, oauthToken, event.secrets.PAT);
+			const { canWithdraw, issueId, claimantPullRequestUrl } = await checkWithdrawalEligibility(issueUrl, oauthToken, event.secrets.PAT);
 			const issueIsOpen = await contract.bountyIsOpen(issueId);
 
 			if (canWithdraw && issueIsOpen) {
 				const options = { gasLimit: 3000000 };
-				const txn = await contract.claimBounty(issueId, payoutAddress, options);
+				const txn = await contract.claimBounty(issueId, payoutAddress, claimantPullRequestUrl, options);
 
-				console.log(`Can withdraw. Transaction hash is ${txn.hash}. Claimant PR is ${JSON.stringify(claimantPullRequest)}`);
-				resolve({ txnHash: txn.hash, issueId, claimantPullRequest });
+				console.log(`Can withdraw. Transaction hash is ${txn.hash}. Claimant PR is ${claimantPullRequestUrl}`);
+				resolve({ txnHash: txn.hash, issueId, claimantPullRequestUrl });
 			} else {
-				console.error(BOUNTY_IS_CLAIMED({ issueUrl, payoutAddress, claimantPullRequest }));
-				reject(BOUNTY_IS_CLAIMED({ issueUrl, payoutAddress, claimantPullRequest }));
+				console.error(BOUNTY_IS_CLAIMED({ issueUrl, payoutAddress, claimantPullRequestUrl }));
+				reject(BOUNTY_IS_CLAIMED({ issueUrl, payoutAddress, claimantPullRequestUrl }));
 			}
 		} catch (error) {
 			console.error(error);
