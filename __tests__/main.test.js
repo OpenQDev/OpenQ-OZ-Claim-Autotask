@@ -86,7 +86,7 @@ describe('main', () => {
 			await expect(main(event, MockOpenQContract)).resolves.toEqual({ issueId: 'I_kwDOGWnnz85GjwA1', claimantPullRequestUrl: "https://github.com/OpenQDev/OpenQ-TestRepo/pull/138", txnHash: '0x123abc' });
 		});
 
-		it.only('should resolve with issueId and txnHash for properly referenced issue - pull request body, no edits', async () => {
+		it('should resolve with issueId and txnHash for properly referenced issue - pull request body, no edits', async () => {
 			const obj = { request: { body: { issueUrl: littleBigIdea } } };
 			event = _.merge(event, obj);
 
