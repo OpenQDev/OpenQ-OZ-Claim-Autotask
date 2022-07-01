@@ -6,6 +6,8 @@ describe('closerCommentRegex', () => {
 	let simpleFixes = 'fixes #1';
 	let closesOrg = 'Closes OpenQDev/OpenQ-TestRepo#143';
 	let multipleCloses = 'this Closes #14 and later also closes OpenQDev/OpenQ-TestRepo#543 and other things';
+	let followedByNewLine = 'Closes #12\n';
+	let mess = 'closes https://github.com/honey-labs/honey-frontend/issues/151\r\n\r\nInitial MVP';
 
 	// Malformed/Non-existent closer comment
 	let noCloser = 'I contain no closer';
@@ -17,6 +19,8 @@ describe('closerCommentRegex', () => {
 		expect(closerCommentRegex(closesOrg, 'OpenQDev', 'OpenQ-TestRepo')).toEqual([143]);
 		expect(closerCommentRegex(noCloser, 'OpenQDev', 'OpenQ-TestRepo')).toEqual([]);
 		expect(closerCommentRegex(multipleCloses, 'OpenQDev', 'OpenQ-TestRepo')).toEqual([14, 543]);
+		expect(closerCommentRegex(followedByNewLine, 'OpenQDev', 'OpenQ-TestRepo')).toEqual([12]);
+		expect(closerCommentRegex(mess, 'honey-labs', 'honey-frontend')).toEqual([151]);
 	});
 
 	it('Returns false and undefined for no closer or malformed closer', async () => {

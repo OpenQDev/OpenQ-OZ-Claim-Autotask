@@ -89,7 +89,7 @@ describe('checkWithdrawalEligibility', () => {
 		});
 
 		describe('Eligible Response', () => {
-			it('should resolve to with canWithdraw: true if eligible pull request is connected in BODY', async () => {
+			it.only('should resolve to with canWithdraw: true if eligible pull request is connected in BODY', async () => {
 				const issuePrData = { data: { viewer: { login: 'FlacoJones' }, resource: { id: 'I_kwDOGWnnz85GjwA1', number: 136, repository: { owner: { login: 'OpenQDev' } }, timelineItems: { edges: [{ node: { createdAt: '2022-03-28T17:47:26Z', source: { __typename: 'PullRequest', bodyText: 'This Closes #136 and also unrelated thing of Fixes #137', mergedAt: '2022-03-28T17:57:44Z', createdAt: '2022-03-28T17:47:26Z', userContentEdits: { edges: [] }, comments: { edges: [] }, merged: true, url: 'https://github.com/OpenQDev/OpenQ-TestRepo/pull/138', author: { login: 'FlacoJones' }, baseRepository: { name: 'OpenQ-TestRepo', owner: { login: 'OpenQDev' } } } } }] } } } };
 
 				mock
