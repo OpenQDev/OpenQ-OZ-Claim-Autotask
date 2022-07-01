@@ -40,6 +40,8 @@ describe('main', () => {
 	// NOT MERGED
 	const referencedButNotMerged = 'https://github.com/OpenQDev/OpenQ-TestRepo/issues/139';
 
+	const littleBigIdea = 'https://github.com/honey-labs/honey-frontend/issues/151';
+
 	beforeEach(() => {
 		event = {
 			request: {
@@ -76,6 +78,16 @@ describe('main', () => {
 	describe('PULL REQUEST BODY', () => {
 		it('should resolve with issueId and txnHash for properly referenced issue - pull request body, no edits', async () => {
 			const obj = { request: { body: { issueUrl: issueReferencedAndMergedByFlacoJones } } };
+			event = _.merge(event, obj);
+
+			const MockOpenQContract = require('../__mocks__/MockOpenQContract');
+			MockOpenQContract.isOpen = true;
+
+			await expect(main(event, MockOpenQContract)).resolves.toEqual({ issueId: 'I_kwDOGWnnz85GjwA1', claimantPullRequestUrl: "https://github.com/OpenQDev/OpenQ-TestRepo/pull/138", txnHash: '0x123abc' });
+		});
+
+		it('should resolve with issueId and txnHash for properly referenced issue - pull request body, no edits', async () => {
+			const obj = { request: { body: { issueUrl: littleBigIdea } } };
 			event = _.merge(event, obj);
 
 			const MockOpenQContract = require('../__mocks__/MockOpenQContract');
