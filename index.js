@@ -15,9 +15,6 @@ exports.handler = async (event) => {
 		case '1224e6b1-20f6-4f55-96b1-f9cf0683ebc8':
 			OPENQ_PROXY_ADDRESS = event.secrets.OPENQ_PROXY_ADDRESS_PRODUCTION;
 			break;
-		case 'c3422db5-0e7d-4770-a285-abe59b983b8f':
-			OPENQ_PROXY_ADDRESS = event.secrets.OPENQ_PROXY_ADDRESS_BCNHACK;
-			break;
 		default:
 			OPENQ_PROXY_ADDRESS = event.secrets.OPENQ_PROXY_ADDRESS;
 	}
