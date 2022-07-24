@@ -1,6 +1,7 @@
 const checkWithdrawalEligibilityImpl = require('./lib/checkWithdrawalEligibility');
 const validateSignedOauthTokenImpl = require('./lib/validateSignedOauthToken');
 const { BOUNTY_IS_CLAIMED } = require('./errors');
+const ethers = require('ethers');
 
 const main = async (
 	event,
@@ -25,7 +26,11 @@ const main = async (
 
 			if (canWithdraw && issueIsOpen) {
 				const options = { gasLimit: 3000000 };
-				const txn = await contract.claimBounty(issueId, payoutAddress, claimantPullRequestUrl, options);
+
+				const abiCoder = new ethers.utils.AbiCoder;
+				const abiEncodedParams = abiCoder.encode(['string', 'uint256'], [claimantPullRequestUrl, depositCount]);
+
+				const txn = await contract.claimBounty(issueId, payoutAddress, abiEncodedParams, options);
 
 				console.log(`Can withdraw. Transaction hash is ${txn.hash}. Claimant PR is ${claimantPullRequestUrl}`);
 				resolve({ txnHash: txn.hash, issueId, claimantPullRequestUrl });
